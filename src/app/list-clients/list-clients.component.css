@@ -1,0 +1,10 @@
+mat-raised-button{
+    margin-left: 10px;
+}
+.button-margin {
+    margin-right: 10px; /* Ajustez la valeur selon vos besoins */
+  }
+.btn{
+    background-color: green;
+    color: white;
+  }
