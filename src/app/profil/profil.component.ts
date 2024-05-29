@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { JwtAgentResponse } from '../models/JwtAgentResponse';
+import { AuthServiceService } from '../service/auth-service.service';
 
 @Component({
   selector: 'app-profil',
@@ -6,25 +8,48 @@ import { Component } from '@angular/core';
   styleUrl: './profil.component.css'
 })
 export class ProfilComponent {
-  username: string = 'JohnDoe'; // Remplacez par le nom d'utilisateur actuel
-  email: string = 'john.doe@example.com'; // Remplacez par l'email actuel
-  patentNumber: string = '123456'; // Remplacez par le numéro de patente actuel
-  registrationNumber: string = '789012'; // Remplacez par le numéro de matriculation actuel
-
+ 
+  username: string = '';
+  email: string = '';
+  patentNumber: string = '';
+  registrationNumber: string = '';
   changePasswordVisible: boolean = false;
   newPassword: string = '';
 
+  changePasswordSuccessMessage: string = '';
+  changePasswordErrorMessage: string = '';
+
+  constructor(private authService: AuthServiceService) { }
+
+  ngOnInit(): void {
+    const agent = this.authService.getCurrentAgent();
+    if (agent) {
+      this.username = agent.username;
+      this.email = agent.email;
+      this.patentNumber = agent.numPatente;
+      this.registrationNumber = agent.numMatricule;
+    }
+  }
+
   toggleChangePassword(): void {
     this.changePasswordVisible = !this.changePasswordVisible;
+    this.changePasswordSuccessMessage = '';
+    this.changePasswordErrorMessage = '';
   }
 
   changePassword(): void {
-    // Logique pour changer le mot de passe, par exemple, appeler un service HTTP pour mettre à jour le mot de passe
-    console.log('Nouveau mot de passe:', this.newPassword);
-    // Réinitialiser le champ du nouveau mot de passe après le changement
-    this.newPassword = '';
-    // Masquer à nouveau le formulaire de changement de mot de passe
-    this.changePasswordVisible = false;
+    this.authService.changePassword(this.username, this.newPassword).subscribe({
+      next: (response) => {
+        console.log('Password change successful', response);
+        this.changePasswordSuccessMessage = response;  // Assuming the response is a success message string
+        this.newPassword = '';
+        this.changePasswordVisible = false;
+      },
+      error: (error) => {
+        console.error('Password change failed', error);
+        this.changePasswordErrorMessage = 'Failed to change password';
+      }
+    });
   }
 
 }

@@ -1,34 +1,29 @@
 <!-- profile.component.html -->
 <app-agent-panel></app-agent-panel>
 <div class="profile-container">
-    <h2 class="profile-title">Profil Utilisateur</h2>
-    <form class="profile-form">
-      <div>
-        <label for="username" class="profile-label">Nom d'utilisateur:</label>
-        <input type="text" id="username" [(ngModel)]="username" name="username" disabled class="profile-input">
-      </div>
-      <div>
-        <label for="email" class="profile-label">Email:</label>
-        <input type="email" id="email" [(ngModel)]="email" name="email" disabled class="profile-input">
-      </div>
-      <div>
-        <label for="patentNumber" class="profile-label">Numéro de Patente:</label>
-        <input type="text" id="patentNumber" [(ngModel)]="patentNumber" name="patentNumber" disabled class="profile-input">
-      </div>
-      <div>
-        <label for="registrationNumber" class="profile-label">Numéro de Matriculation:</label>
-        <input type="text" id="registrationNumber" [(ngModel)]="registrationNumber" name="registrationNumber" disabled class="profile-input">
-      </div>
-      <button (click)="toggleChangePassword()" class="profile-button">Changer Mot de Passe</button>
-    </form>
-  
-    <!-- Formulaire pour changer le mot de passe -->
-    <form *ngIf="changePasswordVisible" (submit)="changePassword()" class="profile-form">
-      <div>
-        <label for="newPassword" class="profile-label">Nouveau Mot de Passe:</label>
-        <input type="password" id="newPassword" [(ngModel)]="newPassword" name="newPassword" required class="profile-input">
-      </div>
-      <button type="submit" class="profile-button">Valider</button>
-    </form>
-  </div>
-  
+  <h2 class="profile-title">Profil Utilisateur</h2>
+  <form class="profile-form">
+    <div>
+      <label for="username" class="profile-label">Nom d'utilisateur:</label>
+      <input type="text" id="username" [(ngModel)]="username" name="username" disabled class="profile-input">
+    </div>
+    <div>
+      <label for="email" class="profile-label">Email:</label>
+      <input type="email" id="email" [(ngModel)]="email" name="email" disabled class="profile-input">
+    </div>
+    
+    <button type="button" (click)="toggleChangePassword()" class="profile-button">Changer Mot de Passe</button>
+  </form>
+
+  <!-- Formulaire pour changer le mot de passe -->
+  <form *ngIf="changePasswordVisible" (ngSubmit)="changePassword()" class="profile-form">
+    <div>
+      <label for="newPassword" class="profile-label">Nouveau Mot de Passe:</label>
+      <input type="password" id="newPassword" [(ngModel)]="newPassword" name="newPassword" required class="profile-input">
+    </div>
+    <button type="submit" class="profile-button">Valider</button>
+  </form>
+  <div *ngIf="changePasswordSuccessMessage" class="success-message">{{ changePasswordSuccessMessage }}</div>
+  <div *ngIf="changePasswordErrorMessage" class="error-message">{{ changePasswordErrorMessage }}</div>
+</div>
+
